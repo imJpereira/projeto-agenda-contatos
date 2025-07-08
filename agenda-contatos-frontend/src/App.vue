@@ -1,47 +1,80 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+
+import MainGrid from './components/MainGrid.vue'
+import { onMounted, ref } from 'vue';
+import NewContactModal from './components/NewContactModal.vue';
+import axios from 'axios';
+
+const modalIsVisible = ref(false);
+const contatos = ref([]);
+
+const alternarModal = () => {
+  modalIsVisible.value = !modalIsVisible.value;
+
+  buscarTodos();
+};
+
+const buscarTodos = async () => {
+    try {
+        const response = await axios.get('http://localhost:8080/contatos');
+        contatos.value = response.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+onMounted(() => {
+    buscarTodos();
+});
+
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <NewContactModal v-if="modalIsVisible" @close="alternarModal" />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
+  <div :class="{ 'dark-bg': modalIsVisible }"></div>
   <main>
-    <TheWelcome />
-  </main>
+    <header>
+      <p>Contatos</p>
+    </header>
+    <section class="grid-container">
+      <div class="button-right-container">
+        <button class="primary-button" @click="alternarModal">Adicionar Contato</button>
+      </div>
+      <MainGrid :contatos="contatos"/>
+    </section>
+</main>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+  .grid-container {
+    height: 95%;
+    margin: 2rem;
+  }
 
-@media (min-width: 1024px) {
   header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+    padding: 2rem 1.5rem;
   }
 
-  .logo {
-    margin: 0 2rem 0 0;
+  header p {
+  margin: 0.2rem 0;
+  font-weight: 500;
   }
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
+  header p:first-child {
+  font-size: 3rem;
+  font-weight: 700;
   }
-}
+  
+  .dark-bg {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+
 </style>
