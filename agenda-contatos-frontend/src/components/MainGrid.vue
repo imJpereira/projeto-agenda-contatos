@@ -1,6 +1,4 @@
 <script setup>
-import axios from 'axios';
-import { onMounted, ref } from 'vue'
 
 const props = defineProps({
     contatos: {
@@ -8,6 +6,17 @@ const props = defineProps({
         required: true
     }
 });
+
+const emit = defineEmits(['editarContato', 'excluirContato']);
+
+const editarContato = (contato) => {
+    emit('editarContato', contato);
+};
+
+const excluirContato = async (contato) => {
+    emit('excluirContato', contato);
+};
+
 
 </script>
 
@@ -31,6 +40,10 @@ const props = defineProps({
         <div>{{ contato.estado }}</div>
         <div>{{ contato.email }}</div>
         <div>{{ contato.categoria }}</div>
+        <div class="action-buttons">
+            <button class="primary-button" @click="editarContato(contato)" >Editar</button>
+            <button class="danger-button" @click="excluirContato(contato)">Excluir</button>
+        </div>
     </div>
 </template>
 
@@ -50,7 +63,7 @@ const props = defineProps({
 .base-grid {
     display: grid;
     /*grid-template-columns: repeat(6, 1fr);*/
-    grid-template-columns: 1.2fr 0.8fr 0.8fr 0.5fr 1.2fr 0.8fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 0.7fr;
     gap: 1rem;
 }
 </style>

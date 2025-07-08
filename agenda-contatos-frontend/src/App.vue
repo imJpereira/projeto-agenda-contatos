@@ -7,10 +7,31 @@ import axios from 'axios';
 
 const modalIsVisible = ref(false);
 const contatos = ref([]);
+const contatoSelecionado = ref({
+  id: null,
+  nome: '',
+  telefone: '',
+  cidade: '',
+  estado: '',
+  email: '',
+  categoria: 'Aluno'
+});
 
-const alternarModal = () => {
-  modalIsVisible.value = !modalIsVisible.value;
+const abrirModal = () => {
+  modalIsVisible.value = true;
+};
 
+const fecharModal = () => {
+  modalIsVisible.value = false;
+  contatoSelecionado.value = {
+    id: null,
+    nome: '',
+    telefone: '',
+    cidade: '',
+    estado: '',
+    email: '',
+    categoria: 'Aluno'
+  };
   buscarTodos();
 };
 
@@ -21,7 +42,21 @@ const buscarTodos = async () => {
     } catch (error) {
         console.log(error);
     }
-}
+};
+
+const excluirContato = async (contato) => {
+    try {
+        await axios.delete(`http://localhost:8080/contatos/excluir/${contato.id}`);
+        buscarTodos();
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const editarContato = async (contato) => {
+  contatoSelecionado.value = { ...contato };
+  modalIsVisible.value = true;
+};
 
 onMounted(() => {
     buscarTodos();
@@ -30,20 +65,29 @@ onMounted(() => {
 </script>
 
 <template>
-  <NewContactModal v-if="modalIsVisible" @close="alternarModal" />
+  <NewContactModal 
+    v-if="modalIsVisible" 
+    :contato="contatoSelecionado" 
+    :acao="contatoSelecionado.id ? 'editar' : 'novo'"
+    @fechar="fecharModal" 
+  />
 
   <div :class="{ 'dark-bg': modalIsVisible }"></div>
   <main>
-    <header>
-      <p>Contatos</p>
-    </header>
-    <section class="grid-container">
-      <div class="button-right-container">
-        <button class="primary-button" @click="alternarModal">Adicionar Contato</button>
-      </div>
-      <MainGrid :contatos="contatos"/>
-    </section>
-</main>
+      <header>
+        <h1>Contatos</h1>
+      </header>
+      <section class="grid-container">
+        <div class="button-right-container">
+          <button class="primary-button" @click="abrirModal">Adicionar Contato</button>
+        </div>
+        <MainGrid 
+          :contatos="contatos" 
+          @excluirContato="excluirContato" 
+          @editarContato="editarContato"
+        />
+      </section>
+  </main>
 </template>
 
 <style scoped>
@@ -57,7 +101,7 @@ onMounted(() => {
     padding: 2rem 1.5rem;
   }
 
-  header p {
+  header h1 {
   margin: 0.2rem 0;
   font-weight: 500;
   }

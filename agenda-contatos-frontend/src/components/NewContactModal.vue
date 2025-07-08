@@ -1,21 +1,43 @@
 <script setup>
+
 import axios from 'axios';
 import { ref } from 'vue';
 
-const emit = defineEmits(['close']);
+const props = defineProps({
+    contato: {
+        type: Object,
+        default: () => ({})
+    },
+    acao: {
+        type: String,
+        default: 'novo'
+    }
+});
 
-const nome = ref('');
-const telefone = ref('');
-const cidade = ref('');       
-const estado = ref('');
-const email = ref('');
-const categoria = ref('Aluno');
+const emit = defineEmits(['fechar']);
+
+const categorias = ["Aluno", "Responsável", "Professor", "Funcionário", "Gestor"];
+
+const nome = ref(props.contato.nome || '');
+const telefone = ref(props.contato.telefone || '');
+const cidade = ref(props.contato.cidade || '');
+const estado = ref(props.contato.estado || '');
+const email = ref(props.contato.email || '');
+const categoria = ref(props.contato.categoria || 'Aluno');
 
 const fecharModal = () => {
-    emit('close');
+    emit('fechar');
 };
 
-const enviarFormulario = async () => {
+const enviarFormulario = () => {
+    if (props.acao === 'novo') {
+        criarContato();
+    } else {
+        atualizarContato();
+    }
+};
+
+const criarContato = async () => {
     try {
         await axios.post('http://localhost:8080/contatos/novo', {
             nome: nome.value,
@@ -26,18 +48,32 @@ const enviarFormulario = async () => {
             categoria: categoria.value
         });
     } catch (error) {
-        console.error("Erro ao enviar o formulário:", error);
+        console.log(error);
     } finally {
         fecharModal();
     }
 };
 
-const categorias = ["Aluno", "Responsável", "Professor", "Funcionário", "Gestor"];
+const atualizarContato = async () => {
+    try {
+        await axios.put(`http://localhost:8080/contatos/editar/${props.contato.id}`, {
+            nome: nome.value,
+            telefone: telefone.value,
+            cidade: cidade.value,
+            estado: estado.value,
+            email: email.value,
+            categoria: categoria.value
+        });
+    } catch (error) {
+        console.log(error);
+    } finally {
+        fecharModal();
+    }
+};
 
 </script>
 
 <template>
-
     <div class="modal">
         <div class="button-right-container">
             <button class="danger-button" @click="fecharModal">X</button>
