@@ -1,6 +1,9 @@
 html, body {
   height: 100vh;
   font-size: 62.5%;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f3f3f3;
+  color: #333;  
 }
 
 body {
@@ -9,6 +12,9 @@ body {
 }
 
 #app {
+
+  background-color: #fff;
+  border-radius: 8px;
   height: 100%;
 }
 
@@ -19,30 +25,51 @@ body {
 
 }
 
-.primary-button {
-  background-color: #30a2ff; /* Green */
+
+/* BOTÕES */
+
+.base-button {
   border: none;
-  color: white;
   padding: 10px 20px;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
   font-size: 16px;
   margin: 4px 2px;
+  border-radius: 8px;
   cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.small-button {
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  padding: 5px 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.primary-button {
+  background-color: #30a2ff; 
+  color: white;
 }
 
 .danger-button {
-  background-color: #ff4d4d; /* Red */
-  border: none;
+  background-color: #ff4d4d; 
   color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
+}
+
+.edit-button {
+  background-color: #ffb84d; 
+  color: white;
 }
 
 
@@ -50,4 +77,26 @@ body {
     display: flex;
     justify-content: flex-end;
     padding: 0.5rem 0;
-  }
+}
+
+
+/* GRID */
+
+.base-grid > div {
+    display: flex;
+    align-items: center;
+    justify-content: left;    
+}
+
+.grid-title {
+    background-color: #e6e6f1;
+    padding: 1rem;
+    font-weight: bold;
+    text-align: left;
+}
+
+.base-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 0.7fr 1fr 1fr 1fr;
+    gap: 1rem;
+}
