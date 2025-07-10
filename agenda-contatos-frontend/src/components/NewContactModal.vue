@@ -128,7 +128,7 @@ const validarFormulario = () => {
                 
                 <div>
                     <label for="estado">UF:</label>
-                    <input type="text" id="estado" v-model="estado" maxlength="2" pattern="[A-Z]{2}" >
+                    <input type="text" id="estado" v-model="estado" maxlength="2" >
                 </div>
             </div>
         
