@@ -50,5 +50,7 @@ Para executar o sistema, primeiro certifique-se de que você tem instalado:
 
 ## Considerações
 * O Banco de dados está rodando um núvem, então pode haver uma leve lentidão devido à latência. Caso seja de interesse fazer testes com um banco de dados local basta seguir o diretório "/agenda-contatos-api/src/main/resources" e abrir o arquivo "application.properties",   dentro do arquivo, basta trocar as credenciais. Lembrando que para testes locais, deve-se criar um banco de dados chamado "db_agenda_contatos".
+  
 * Para acessar o script de criação da tabela, acesse: "/agenda-contatos-api/src/main/resources/db/migration", dentro desse diretório estão as versões do banco de dados.
+  
 * Criei um arquivo Dockerfile para rodar a API na núvem, porém houve uma instabilidade no serviço que parava depois de um tempo de inatividade e não voltava mais, então abandonei a ideia.
