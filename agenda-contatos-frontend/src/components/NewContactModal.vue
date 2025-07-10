@@ -82,7 +82,7 @@ const atualizarContato = async () => {
 
 const validarFormulario = () => {
     let mensagem = '';
-    if (!nome.value) {
+    if (!nome.value)  {
         mensagem += 'O campo Nome é obrigatório.\n';
     }
     if (!telefone.value) {
@@ -168,6 +168,10 @@ const validarFormulario = () => {
     .modal label {
         display: block;
         margin-bottom: 0.5rem;
+    }
+
+    #estado {
+        text-transform: uppercase;
     }
 
     .modal input,
